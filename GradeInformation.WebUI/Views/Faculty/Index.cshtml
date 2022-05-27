@@ -1,0 +1,24 @@
+﻿@using GradeInformation.Entities.Concrete
+@model List<Faculty>
+
+@{
+    Layout = "_Layout";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Faculty ID
+        </th>
+        <th>
+            Faculty Name 
+        </th>
+    </tr>
+    @foreach (var item in Model)
+   {
+      <tr>
+          <td>@item.FacultyId</td>
+          <td>@item.FacultyName</td>
+      </tr> 
+   }
+</table>

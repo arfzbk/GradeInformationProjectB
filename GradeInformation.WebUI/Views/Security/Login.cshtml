@@ -1,0 +1,38 @@
+﻿@model GradeInformation.WebUI.Model.Security.LoginViewModel
+@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8"/>
+    <title>Giriş Sayfası</title>
+</head>
+<body>
+    <div class="card d-flex mx-auto mt-5" style="max-width: 500px;min-width:400px;">
+        <article class="card-body">
+            <a asp-controller="Security" asp-action="Register" class="float-right btn btn-outline-primary">Kayıt Ol</a>
+            <h4 class="card-title mb-4 mt-1">Giriş Yap</h4>
+            <form asp-controller="Security" asp-action="Login" method="post">
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" asp-for="UserName" class="form-control" placeholder="Username" >
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <a class="float-right" asp-controller="Security" asp-action="ForgotPassword">Forgot?</a>
+                    <label>Şifre</label>
+                    <input class="form-control" asp-for="Password" placeholder="******" type="password">
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label> <input type="checkbox" asp-for="IsPersistent"> Şifremi Kaydet </label>
+                    </div> <!-- checkbox .// -->
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Giriş Yap  </button>
+                </div> <!-- form-group// -->
+            </form>
+        </article>
+    </div>
+</body>
+</html>

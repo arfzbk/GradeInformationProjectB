@@ -1,0 +1,30 @@
+﻿@model GradeInformation.WebUI.Model.Security.RegisterViewModel
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+</head>
+<body>
+     <div class="card d-flex mx-auto mt-5" style="max-width: 500px;min-width:400px;">
+        <article class="card-body">
+            <h4 class="card-title mb-4 mt-1">Kayıt Ol</h4>
+            <form asp-controller="Security" asp-action="Register" method="post">
+                <div class="form-group">
+                    <label>Kimlik Numarası</label>
+                    <input type="text" asp-for="TC" class="form-control" placeholder="örn:12345678910" >
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Kayıt Ol  </button>
+                </div> <!-- form-group// -->
+            </form>
+        </article>
+    </div>
+</body>
+</html>

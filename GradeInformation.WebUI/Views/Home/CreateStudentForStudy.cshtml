@@ -1,0 +1,77 @@
+﻿@model GradeInformation.WebUI.Model.StudentStudyCreateViewModel
+
+@{
+    Layout = "_Layout";
+}
+<div class="card d-flex mx-auto mt-5">
+    <article class="card-body">
+        <h4 class="card-title mb-4 mt-1">Çalışma Bilgisi Ekle</h4>
+            <form asp-controller="Home" asp-action="CreateStudentForStudy" role="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="hidden" asp-for="StudentCompany.StudentId" value="@Model.StudentId" />
+                    </div>
+                </div>
+                <div class="form-row d-flex justify-content-between">
+                    <div class="form-group col-md-6">
+                        <label for="company">Şirket Seçiniz</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="company" asp-for="StudentCompany.CompanyId">
+                        @foreach (var item in Model.Companies)
+                        {
+                                              <option value="@item.CompanyId">@item.CompanyName</option>
+                        }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Başlangıç Tarihi Seçiniz</label>
+                        <input type="date" class="form-control" asp-for="StudentCompany.StartDate">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Bitiş Tarihi Seçiniz</label>
+                        <input type="date" class="form-control" asp-for="StudentCompany.FinishDate">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Pozisyonunuz Yazınız</label>
+                        <input type="text" class="form-control" placeholder="Örn(internship, full-time, half-time)" asp-for="StudentCompany.Position" >
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Title Bilgisini Ekleyiniz.</label>
+                        <input type="text" class="form-control" placeholder="Örn(junior yazılımcı, senior yazılımcı)" asp-for="StudentCompany.Title">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Maaş Bilginizi Giriniz.</label>
+                        <input type="number" placeholder="Örn(2000.31)" min="0.00" max="10000.00" step="0.01" class="form-control" asp-for="StudentCompany.Salary">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="companytoollist">Şirkette Hangi Toolları Kullandığınızı Seçiniz.</label>
+                        <select class="form-control selectpicker" data-live-search="true" data-size="5" id="companytoollist" asp-for="ToolIds" multiple>
+                        @foreach (var item in Model.ToolList)
+                        {
+                                              <option value="@item.ToolId">@item.ToolName</option>
+                        }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fields">Şirkette Hangi Alan Üzerinde Çalıştığınızı Seçiniz.</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="fields" asp-for="StudentCompany.FieldId">
+                        @foreach (var item in Model.Fields)
+                        {
+                           <option value="@item.FieldId">@item.FieldName</option>
+                        }
+                        </select>
+                    </div>
+                </div>
+               <div class="form-row d-flex justify-content-center">
+        <div class="form-group col-md-3">
+              <button type="submit" name="create" class="btn btn-success btn-block">Ekle</button>
+            </div>
+        </div>	
+        </form>
+     </article>
+</div>

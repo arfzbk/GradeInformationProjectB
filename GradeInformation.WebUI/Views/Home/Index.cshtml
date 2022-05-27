@@ -1,0 +1,175 @@
+﻿@model GradeInformation.WebUI.Model.StatisticalViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<div class="card d-flex mx-auto mt-5" style="max-width: 1500px;min-width:900px;">
+    <article class="card-body">
+        <h4 class="card-title mb-4 mt-1">İstatistikler</h4>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-success">
+                    <div class="card-body bg-success text-white">
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="fa fa-user-graduate fa-5x"></i>
+                            </div>
+                            <div class="col-9 text-right">
+                                <h1>@Model.CountOfGraduate</h1>
+                                <h4>Mezun Öğrenci</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-warning">
+                    <div class="card-body bg-warning text-white">
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="fa fa-clock fa-5x"></i>
+                            </div>
+                            <div class="col-9 text-right">
+                                <h1>@Model.Ortalama Gün</h1>
+                                <h4>Çalışma Süresi</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-danger">
+                    <div class="card-body bg-danger text-white">
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="fa fa-suitcase fa-5x"></i>
+                            </div>
+                            <div class="col-9 text-right">
+                                <h1>@string.Format("{0:n2}",@Model.AverageGPA)</h1>
+                                <h4>Ortalama GPA</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="chartdiv"></div>
+        <div id="chartdiv2"></div>
+        <div id="chartdiv3"></div>
+    </article>
+</div>
+
+
+
+@section Scripts{
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+          google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            $(function(){
+                $.ajax({
+                    type : 'GET',
+                    url : '/Home/GetSectorChartJSON/',
+                    success : function(chartsdata){
+                        var Data = chartsdata;
+                        var data = new google.visualization.DataTable();
+
+                        data.addColumn('string', 'CategoryName');
+                        data.addColumn('number', 'Öğrenci Sayısı');
+
+                        for(var item in Data.tools){
+                            data.addRow([item,Data.tools[item]]);
+                        }
+
+                        var options = {
+                            title: 'En Çok Kullanılan Toollar',
+                            chartArea: {width: '50%'},
+                            hAxis: {
+                                title: 'Kullanılma Sayısı',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Tool Adı'
+                            }
+                        };
+
+                        // Instantiate and draw our chart, passing in some options
+                        var chart = new google.visualization.BarChart(document.getElementById('chartdiv'));
+
+                        //Draw pie chart command with data and chart options
+                        chart.draw(data,options);
+
+
+
+                        //Çalışanların En Çok Tercih Ettiği Alan
+                        data = new google.visualization.DataTable();
+
+                        data.addColumn('string', 'CategoryName');
+                        data.addColumn('number', 'Öğrenci Sayısı');
+
+                        for(var item in Data.fields){
+                            data.addRow([item,Data.fields[item]]);
+                        }
+
+                        options = {
+                            title: 'Çalışılan İlk 5 Alan',
+                            chartArea: {width: '50%'},
+                            hAxis: {
+                                title: 'Çalışan Mezun Sayısı',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Alan Adı'
+                            }
+                        };
+                        // Instantiate and draw our chart, passing in some options
+                        var chart2 = new google.visualization.BarChart(document.getElementById('chartdiv2'));
+
+                        //Draw pie chart command with data and chart options
+                        chart2.draw(data,options);
+
+
+                        //Çalışanların En Çok Tercih Ettiği Sektör
+                        data = new google.visualization.DataTable();
+
+                        data.addColumn('string', 'Blabla');
+                        data.addColumn('number', 'Öğrenci Sayısı');
+
+
+                        for(var item in Data.sectors){
+                            data.addRow([item,Data.sectors[item]]);
+                        }
+
+                        options = {
+                            title: 'Çalışılan İlk 5 Sektör',
+                            chartArea: {width: '50%'},
+                            hAxis: {
+                                title: 'Çalışan Mezun Sayısı',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Sektör Adı'
+                            }
+                        };
+                        // Instantiate and draw our chart, passing in some options
+                        var chart3 = new google.visualization.BarChart(document.getElementById('chartdiv3'));
+
+                        //Draw pie chart command with data and chart options
+                        chart3.draw(data,options);
+
+                    },
+                    error: function () {
+                        alert("Error loading data! Please try again.");
+                    }
+                });
+            })
+
+    }
+</script>
+
+  }

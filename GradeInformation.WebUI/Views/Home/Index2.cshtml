@@ -1,0 +1,248 @@
+﻿@model GradeInformation.WebUI.Model.StudentStudiedCompanyInfo
+
+@{
+    Layout = "_Layout";
+}
+<div class="card d-flex mx-auto mt-5">
+    <article class="card-body">
+        <h4 class="card-title mb-4 mt-1">Öğrenci Bilgileri</h4>
+        <form asp-controller="Home" asp-action="EditStudent" role="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Öğrenci Adı</label>
+                    <input type="hidden" asp-for="Student.StudentId" />
+                    <input type="hidden" asp-for="Student.City" />
+                    <input type="hidden" asp-for="Student.Gender" />
+                    <input type="hidden" asp-for="Student.StudentCompanies" />
+
+                    <input type="text" class="form-control" asp-for="Student.Name" value="@Model.Student.Name">
+                </div> <!-- form-group// -->
+                @if (!string.IsNullOrEmpty(@Model.Student.NewSurname) || @Model.Student.NewSurname == "NULL")
+                {
+                    <input type="hidden" asp-for="Student.SurName" />
+                    <div class="form-group col-md-6">
+                        <label>Öğrenci Soyadı</label>
+                        <input type="text" class="form-control" asp-for="Student.NewSurname" value="@Model.Student.NewSurname">
+                    </div> <!-- form-group// -->
+                }
+                else
+                {
+                    @if (@Model.Student.Gender.ToUpper() == "K")
+                    {
+                       <input type="hidden" asp-for="Student.SurName" />
+                    <div class="form-group col-md-6">
+                        <label>Öğrenci Kızlık Soyadı</label>
+                        <input type="text" class="form-control" asp-for="Student.NewSurname" value="@Model.Student.NewSurname">
+                    </div> <!-- form-group// -->  
+                    }
+                    <input type="hidden" asp-for="Student.NewSurname" />
+                    <div class="form-group col-md-6">
+                        <label>Öğrenci Soyadı</label>
+                        <input type="text" class="form-control" asp-for="Student.SurName" value="@Model.Student.SurName">
+                    </div> <!-- form-group// -->
+                }
+            </div>
+            <div class="form-group">
+                <label>Öğrenci Numarası</label>
+                <input type="text" class="form-control" asp-for="Student.StudentNumber" readonly value="@Model.Student.StudentNumber">
+            </div>
+            <div class="form-group">
+                <label>Öğrenci Telefonu</label>
+                <input type="number" class="form-control" asp-for="Student.Phone" maxlength="10" value="@Model.Student.Phone">
+                <span asp-validation-for="Student.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Öğrenci Emaili</label>
+                <input type="email" class="form-control" asp-for="Student.Email" value="@Model.Student.Email">
+                <span asp-validation-for="Student.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Öğrenci Kimliği</label>
+                <input type="text" class="form-control" asp-for="Student.Tc" readonly value="@Model.Student.Tc">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Mezun Tarihi</label>
+                    <input type="text" class="form-control" asp-for="Student.DateOfGrade" readonly value="@Model.Student.DateOfGrade.ToString("yyyy/MM/dd")">
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Öğrenci Ortalaması</label>
+                    <input type="text" class="form-control" asp-for="Student.Gpa" readonly value="@Model.Student.Gpa">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Öğrenci Bölümü</label>
+                    <input type="text" class="form-control" asp-for="DegreeName" readonly value="@Model.Student.Degree.DegreeName">
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Doğum Tarihi</label>
+                    <input type="text" class="form-control" asp-for="Student.BirthDate" readonly value="@Model.Student.BirthDate?.ToString("yyyy/MM/dd")">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Şehir</label>
+                <select class="form-control selectpicker" data-live-search="true" asp-for="CityId" id="exampleFormControlSelect1">
+                    @foreach (var city in Model.Cities)
+                    {
+                        if (city.CityId == Model.Student.City.CityId)
+                        {
+                            <option selected value="@city.CityId">@city.CityName</option>
+                        }
+                        else
+                        {
+                            <option value="@city.CityId">@city.CityName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-row d-flex justify-content-start">
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-success btn-block"> Güncelle  </button>
+            </div>
+            </div>
+        </form>
+    </article>
+</div>
+@*@foreach (var city in Model.City)
+    {
+    if (city.CityId == Model.Student.City.CityId)
+    {
+    <option value="@city.CityId" selected>@city.CityName</option>
+    }
+    <option value="@city.CityId">@city.CityName</option>
+    }
+*@
+<div class="card d-flex mx-auto mt-5">
+    <article class="card-body">
+        <h4 class="card-title mb-4 mt-1">Çalışma Bilgileri</h4>
+        @foreach (var studentStudy in Model.Student.StudentCompanies)
+        {
+            <form asp-controller="Home" asp-action="EditStudentForStudy" role="post">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="hidden" asp-for="StudentCompany.StudentCompanyId" value="@studentStudy.StudentCompanyId" />
+                        <input type="hidden" asp-for="StudentCompany.StudentId" value="@studentStudy.StudentId" />
+                    </div>
+                </div>
+
+                <div class="form-row d-flex justify-content-between">
+                    <div class="form-group col-md-6">
+                        <label for="company">Çalışılan Şirket</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="company" asp-for="StudentCompany.CompanyId">
+                            @foreach (var item in Model.Companies)
+                            {
+                                if (item.CompanyId == studentStudy.Company.CompanyId)
+                                {
+                                    <option value="@item.CompanyId" selected>@item.CompanyName (@item.City?.CityName)</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.CompanyId">@item.CompanyName (@item.City?.CityName)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1 align-self-end">
+                    <button type="submit" name="save" formaction="DeleteStudentForStudy" class="btn btn-danger btn-block">Sil</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Başlangıç Tarihi</label>
+                        <input type="date" class="form-control" asp-for="StudentCompany.StartDate" value="@studentStudy.StartDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Bitiş Tarihi</label>
+                        <input type="date" class="form-control" asp-for="StudentCompany.FinishDate" value="@studentStudy.FinishDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Position</label>
+                        <input type="text" class="form-control" asp-for="StudentCompany.Position" value="@studentStudy.Position">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Title</label>
+                        <input type="text" class="form-control" asp-for="StudentCompany.Title" value="@studentStudy.Title">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Salary</label>
+                        <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" asp-for="StudentCompany.Salary" value="@studentStudy.Salary">
+                    </div>
+                </div>
+
+                @*                    <div class="form-group">
+                    <label>Şirkette Kullanılan Toollar</label>
+                    @{
+                    string toolId ="" ;
+                    foreach(var item in Model.StudentCompanyToolList)
+                    {
+                    if (item.StudentCompanyId == studentStudy.StudentCompanyId)
+                    {
+                    toolId += item.Tool.ToolName + ",";
+                    }
+                    }
+
+                    }
+                    <input type="text" class="form-control"  readonly value="@toolId">
+                    </div>
+
+                *@
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="companyToolList">Şirkette Kullanılan Toollar</label>
+                        <select class="form-control selectpicker" data-live-search="true" data-size="5" id="companyToolList" asp-for="ToolIds" multiple>
+                            @foreach (var item in Model.ToolList)
+                            {
+                                if (Model.StudentCompanyToolList.Where(sct => sct.StudentCompanyId == studentStudy.StudentCompanyId).ToList().Where(s => s.ToolId == item.ToolId).ToList().Count > 0)
+                                {
+                                    <option value="@item.ToolId" selected>@item.ToolName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.ToolId">@item.ToolName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fields">Şirkette Çalışılan Alan</label>
+                        <select class="form-control selectpicker" data-live-search="true" id="fields" asp-for="StudentCompany.FieldId">
+                            @foreach (var item in Model.Fields)
+                            {
+                                if (item.FieldId == studentStudy.Field.FieldId)
+                                {
+                                    <option value="@item.FieldId" selected>@item.FieldName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.FieldId">@item.FieldName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row d-flex justify-content-start">
+                <div class="form-group col-md-2">
+                    <button type="submit" name="save" formaction="EditStudentForStudy" class="btn btn-success btn-block"> Güncelle </button>
+                </div>
+                </div>
+            </form>
+            <hr />
+        }
+        <div class="form-row d-flex justify-content-end">
+
+        <div class="form-group col-md-3">
+            <a  asp-controller="Home" asp-action="CreateStudentForStudy" ><button name="create" class="btn btn-primary btn-block">Yeni Çalışma Bilgisi Ekle</button></a>
+        </div>
+
+        </div>
+        
+    </article>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
